@@ -8,7 +8,7 @@ module.exports = {
       }
     },
     fontFamily: {
-      'Manrope': ['Manrope', 'sans-serif'],
+      'Poppins': ['Poppins', 'sans-serif'],
     }
   },
   
