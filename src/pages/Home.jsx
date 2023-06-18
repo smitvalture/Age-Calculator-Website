@@ -3,6 +3,15 @@ import iconButton from '../assets/images/icon-arrow.svg'
 
 const Home = () => {
 
+  const d = new Date()
+
+  let yyyy = d.getFullYear()
+  let mm = d.getMonth() + 1
+  let dd = d.getDate()
+  var month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+  // console.log(yyyy, mm, dd);
+
   const [years, setYears] = useState("--")
   const [months, setMonths] = useState("--")
   const [days, setDays] = useState("--")
@@ -11,22 +20,35 @@ const Home = () => {
   const [monthsError, setMonthsError] = useState("")
   const [daysError, setDaysError] = useState("")
 
-  const [yearsInput, setYearsInput] = useState("")
-  const [monthsInput, setMonthsInput] = useState("")
-  const [daysInput, setDaysInput] = useState("")
+  const [yearsInput, setYearsInput] = useState()
+  const [monthsInput, setMonthsInput] = useState()
+  const [daysInput, setDaysInput] = useState()
 
   function handleSubmit(e) {
     e.preventDefault()
-    if (daysInput == "") {
-      setDaysError("This field is required.")
+
+    if (daysInput > dd) {
+      dd = dd + month[mm - 1]
+      mm = mm - 1
     }
-    if (monthsInput == "") {
-      setDaysError("This field is required.")
+
+    if (monthsInput > mm) {
+      mm = mm + 12
+      yyyy = yyyy - 1
     }
-    if (yearsInput == "") {
-      setDaysError("This field is required.")
+
+    if (!yearsInput || !monthsInput || !daysInput) {
+      setDays("--")
+      setMonths("--")
+      setYears("--")
+    }
+    else {
+      setDays(dd - daysInput)
+      setMonths(mm - monthsInput)
+      setYears(yyyy - yearsInput)
     }
   }
+
 
   return (
     <>
@@ -36,19 +58,25 @@ const Home = () => {
           <form onSubmit={handleSubmit} className='w-[600px] h-fit flex flex-col gap-10'>
             <div className='w-3/4 flex gap-5'>
               <div className='flex flex-col gap-1 w-[30%]'>
+
                 <label htmlFor="day" className={`${daysError ? "text-red-500" : "text-gray-500"} text-sm font-semibold tracking-[4px]`}>DAY</label>
-                <input onChange={(e) => { setDaysInput(e.target.value); setDaysError("") }} className={`${daysError ? "text-red-500 border-red-300" : "border-gray-300 hover:border-purple-400"} px-5 py-3 rounded-md border-2 focus:outline-2 outline-[#7d50f5] text-2xl font-extrabold placeholder:font-extrabold`} type="text" value={daysInput} name="day" id="day" placeholder='DD' />
+                <input onChange={(e) => { setDaysInput(e.target.value); setDaysError("") }} className={`${daysError ? "text-red-500 border-red-300" : "border-gray-300 hover:border-purple-400"} px-5 py-3 rounded-md border-2 focus:outline-2 outline-[#7d50f5] text-2xl font-extrabold placeholder:font-extrabold`} type="text" value={daysInput} minLength={1} maxlength={2} name="day" id="day" placeholder='DD' />
                 {daysError && <p className='text-red-400 text-xs'>{daysError}</p>}
+
               </div>
               <div className='flex flex-col gap-1 w-[30%]'>
+
                 <label htmlFor="month" className={`${monthsError ? "text-red-400" : "text-gray-500"} text-gray-500 text-sm font-semibold tracking-[4px]`}>MONTH</label>
-                <input onChange={(e) => { setMonthsInput(e.target.value); setMonthsError("") }} className={`${monthsError ? "text-red-500 border-red-300" : "border-gray-300 hover:border-purple-400"} px-5 py-3 rounded-md border-2 focus:outline-2 outline-[#7d50f5] text-2xl font-extrabold placeholder:font-extrabold`} type="text" value={monthsInput} name="month" id="month" placeholder='MM' />
+                <input onChange={(e) => { setMonthsInput(e.target.value); setMonthsError("") }} className={`${monthsError ? "text-red-500 border-red-300" : "border-gray-300 hover:border-purple-400"} px-5 py-3 rounded-md border-2 focus:outline-2 outline-[#7d50f5] text-2xl font-extrabold placeholder:font-extrabold`} type="text" value={monthsInput} minLength={1} maxlength={2} name="month" id="month" placeholder='MM' />
                 {monthsError && <p className='text-red-400 text-xs'>{monthsError}</p>}
+
               </div>
               <div className='flex flex-col gap-1 w-[30%]'>
+
                 <label htmlFor="year" className={`${yearsError ? "text-red-400" : "text-gray-500"} text-gray-500 text-sm font-semibold tracking-[4px]`}>YEAR</label>
-                <input onChange={(e) => { setYearsInput(e.target.value); setYearsError("") }} className={`${yearsError ? "text-red-500 border-red-300" : "border-gray-300 hover:border-purple-400"} px-5 py-3 rounded-md border-2 focus:outline-2 outline-[#7d50f5] text-2xl font-extrabold placeholder:font-extrabold`} type="text" value={yearsInput} name="year" id="year" placeholder='YYYY' />
+                <input onChange={(e) => { setYearsInput(e.target.value); setYearsError("") }} className={`${yearsError ? "text-red-500 border-red-300" : "border-gray-300 hover:border-purple-400"} px-5 py-3 rounded-md border-2 focus:outline-2 outline-[#7d50f5] text-2xl font-extrabold placeholder:font-extrabold`} type="text" value={yearsInput} minLength={4} maxlength={4} name="year" id="year" placeholder='YYYY' />
                 {yearsError && <p className='text-red-400 text-xs'>{yearsError}</p>}
+
               </div>
             </div>
 
