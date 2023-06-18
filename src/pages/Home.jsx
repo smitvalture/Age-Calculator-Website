@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import iconButton from '../assets/images/icon-arrow.svg'
+import Loading from '../components/Loading'
 
 const Home = () => {
 
@@ -12,6 +13,7 @@ const Home = () => {
   let round = Math.round
 
   // console.log(yyyy, mm, dd);
+  const [loading, setLoading] = useState(null)
 
   const [years, setYears] = useState("--")
   const [months, setMonths] = useState("--")
@@ -77,9 +79,13 @@ const Home = () => {
 
 
     if (!error.day && !error.month && !error.year) {
+      setLoading(true)
       setDays(dd - daysInput)
       setMonths(mm - monthsInput)
       setYears(yyyy - yearsInput)
+      setTimeout(() => {
+        setLoading(false)
+      }, 700);
     }
   }
 
@@ -87,6 +93,7 @@ const Home = () => {
   return (
     <>
       <section className='w-screen h-screen flex justify-center items-center bg-[#efefef] font-Poppins'>
+        {loading && <Loading />}
         <div className='w-fit h-fit p-8 md:p-14 flex flex-col gap-14 items-center bg-white shadow-xl rounded-2xl rounded-br-[7rem] md:rounded-br-[10rem]'>
 
           <form onSubmit={handleSubmit} className='w-[calc(100vw-110px)] md:w-[500px] lg:w-[600px] h-fit flex flex-col gap-14 md:gap-10'>
