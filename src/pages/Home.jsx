@@ -4,9 +4,6 @@ import Loading from '../components/Loading'
 
 const Home = () => {
 
-  const monthInputRef = useRef(null);
-  const yearInputRef = useRef(null);
-
   const d = new Date()
 
   let yyyy = d.getFullYear()
@@ -35,6 +32,10 @@ const Home = () => {
   const [yearsInput, setYearsInput] = useState("")
   const [monthsInput, setMonthsInput] = useState("")
   const [daysInput, setDaysInput] = useState("")
+
+
+  const monthInputRef = useRef(null);
+  const yearInputRef = useRef(null);
 
   const handleDayInputChange = (e) => {
     const input = e.target;
@@ -126,22 +127,22 @@ const Home = () => {
               <div className='flex flex-col gap-1 w-[35%] md:w-[30%]'>
 
                 <label htmlFor="day" className={`${error.day ? "text-red-500" : "text-gray-500"} text-xs md:text-sm font-semibold tracking-[4px]`}>DAY</label>
-                <input ref={yearInputRef} onChange={(e) => { setDaysInput(e.target.value); setError({ ...error, day: "" }) }} className={`${error.day ? "text-red-500 border-red-300" : "border-gray-300 hover:border-purple-400"} px-3 md:px-5 py-2 md:py-3 rounded-md border-2 focus:outline-2 outline-[#7d50f5] text-lg md:text-2xl font-extrabold placeholder:font-extrabold`} type="text" value={daysInput} minLength={1} maxLength={2} name="day" id="day" placeholder='DD' />
-                {error.day && <p className='text-red-400 text-xs'>{error.day}</p>}
+                <input onChange={handleDayInputChange} className={`${error.day ? "text-red-500 border-red-300" : "border-gray-300 hover:border-purple-400"} px-3 md:px-5 py-2 md:py-3 rounded-md border-2 focus:outline-2 outline-[#7d50f5] text-lg md:text-2xl font-extrabold placeholder:font-extrabold`} type="text" value={daysInput} minLength={1} maxLength={2} name="day" id="day" placeholder='DD' />
+                {error.day && <p className='text-red-400 text-xs italic'>{error.day}</p>}
 
               </div>
               <div className='flex flex-col gap-1 w-[35%] md:w-[30%]'>
 
                 <label htmlFor="month" className={`${error.month ? "text-red-400" : "text-gray-500"} text-xs md:text-sm font-semibold tracking-[4px]`}>MONTH</label>
-                <input ref={monthInputRef} onChange={(e) => { setMonthsInput(e.target.value); setError({ ...error, month: "" }) }} className={`${error.month ? "text-red-500 border-red-300" : "border-gray-300 hover:border-purple-400"} px-3 md:px-5 py-2 md:py-3 rounded-md border-2 focus:outline-2 outline-[#7d50f5] text-lg md:text-2xl font-extrabold placeholder:font-extrabold`} type="text" value={monthsInput} minLength={1} maxLength={2} name="month" id="month" placeholder='MM' />
-                {error.month && <p className='text-red-400 text-xs'>{error.month}</p>}
+                <input ref={monthInputRef} onChange={handleMonthInputChange} className={`${error.month ? "text-red-500 border-red-300" : "border-gray-300 hover:border-purple-400"} px-3 md:px-5 py-2 md:py-3 rounded-md border-2 focus:outline-2 outline-[#7d50f5] text-lg md:text-2xl font-extrabold placeholder:font-extrabold`} type="text" value={monthsInput} minLength={1} maxLength={2} name="month" id="month" placeholder='MM' />
+                {error.month && <p className='text-red-400 text-xs italic'>{error.month}</p>}
 
               </div>
               <div className='flex flex-col gap-1 w-[35%] md:w-[30%]'>
 
                 <label htmlFor="year" className={`${error.year ? "text-red-400" : "text-gray-500"} text-xs md:text-sm font-semibold tracking-[4px]`}>YEAR</label>
-                <input onChange={(e) => { setYearsInput(e.target.value); setError({ ...error, year: "" }) }} className={`${error.year ? "text-red-500 border-red-300" : "border-gray-300 hover:border-purple-400"} px-3 md:px-5 py-2 md:py-3 rounded-md border-2 focus:outline-2 outline-[#7d50f5] text-lg md:text-2xl font-extrabold placeholder:font-extrabold`} type="text" value={yearsInput} minLength={4} maxLength={4} name="year" id="year" placeholder='YYYY' />
-                {error.year && <p className='text-red-400 text-xs'>{error.year}</p>}
+                <input ref={yearInputRef} onChange={(e) => { setYearsInput(e.target.value); setError({ ...error, year: "" }) }} className={`${error.year ? "text-red-500 border-red-300" : "border-gray-300 hover:border-purple-400"} px-3 md:px-5 py-2 md:py-3 rounded-md border-2 focus:outline-2 outline-[#7d50f5] text-lg md:text-2xl font-extrabold placeholder:font-extrabold`} type="text" value={yearsInput} minLength={4} maxLength={4} name="year" id="year" placeholder='YYYY' />
+                {error.year && <p className='text-red-400 text-xs italic'>{error.year}</p>}
 
               </div>
             </div>
