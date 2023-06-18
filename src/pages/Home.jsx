@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import iconButton from '../assets/images/icon-arrow.svg'
 import Loading from '../components/Loading'
 
 const Home = () => {
+
+  const monthInputRef = useRef(null);
+  const yearInputRef = useRef(null);
 
   const d = new Date()
 
@@ -33,22 +36,29 @@ const Home = () => {
   const [monthsInput, setMonthsInput] = useState("")
   const [daysInput, setDaysInput] = useState("")
 
+  const handleDayInputChange = (e) => {
+    const input = e.target;
+    setDaysInput(input.value);
+    setError({ ...error, day: '' });
 
-
-  function handleSubmit(e) {
-    e.preventDefault()
-
-    if (daysInput > dd) {
-      dd = dd + month[mm - 1]
-      mm = mm - 1
+    // Move focus to the month input after entering the day
+    if (input.value.length === input.maxLength) {
+      monthInputRef.current.focus();
     }
+  };
 
-    if (monthsInput > mm) {
-      mm = mm + 12
-      yyyy = yyyy - 1
+  const handleMonthInputChange = (e) => {
+    const input = e.target;
+    setMonthsInput(input.value);
+    setError({ ...error, month: '' });
+
+    // Move focus to the year input after entering the month
+    if (input.value.length === input.maxLength) {
+      yearInputRef.current.focus();
     }
+  };
 
-
+  function handleErrors() {
     if (!yearsInput || !monthsInput || !daysInput) {
       setDays("--")
       setMonths("--")
@@ -77,10 +87,23 @@ const Home = () => {
       setError((prevError) => ({ ...prevError, day: "Must be a valid day" }));
       // console.log("error:", error.day);
     }
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault()
+
+    if (daysInput > dd) {
+      dd = dd + month[mm - 1]
+      mm = mm - 1
+    }
+
+    if (monthsInput > mm) {
+      mm = mm + 12
+      yyyy = yyyy - 1
+    }
 
 
-
-    if (error.day || error.month || error.year) {
+    if (error.day == "" || error.month == "" || error.year == "") {
       setLoading(true)
       setDays(dd - daysInput)
       setMonths(mm - monthsInput)
@@ -103,14 +126,14 @@ const Home = () => {
               <div className='flex flex-col gap-1 w-[35%] md:w-[30%]'>
 
                 <label htmlFor="day" className={`${error.day ? "text-red-500" : "text-gray-500"} text-xs md:text-sm font-semibold tracking-[4px]`}>DAY</label>
-                <input onChange={(e) => { setDaysInput(e.target.value); setError({ ...error, day: "" }) }} className={`${error.day ? "text-red-500 border-red-300" : "border-gray-300 hover:border-purple-400"} px-3 md:px-5 py-2 md:py-3 rounded-md border-2 focus:outline-2 outline-[#7d50f5] text-lg md:text-2xl font-extrabold placeholder:font-extrabold`} type="text" value={daysInput} minLength={1} maxLength={2} name="day" id="day" placeholder='DD' />
+                <input ref={yearInputRef} onChange={(e) => { setDaysInput(e.target.value); setError({ ...error, day: "" }) }} className={`${error.day ? "text-red-500 border-red-300" : "border-gray-300 hover:border-purple-400"} px-3 md:px-5 py-2 md:py-3 rounded-md border-2 focus:outline-2 outline-[#7d50f5] text-lg md:text-2xl font-extrabold placeholder:font-extrabold`} type="text" value={daysInput} minLength={1} maxLength={2} name="day" id="day" placeholder='DD' />
                 {error.day && <p className='text-red-400 text-xs'>{error.day}</p>}
 
               </div>
               <div className='flex flex-col gap-1 w-[35%] md:w-[30%]'>
 
                 <label htmlFor="month" className={`${error.month ? "text-red-400" : "text-gray-500"} text-xs md:text-sm font-semibold tracking-[4px]`}>MONTH</label>
-                <input onChange={(e) => { setMonthsInput(e.target.value); setError({ ...error, month: "" }) }} className={`${error.month ? "text-red-500 border-red-300" : "border-gray-300 hover:border-purple-400"} px-3 md:px-5 py-2 md:py-3 rounded-md border-2 focus:outline-2 outline-[#7d50f5] text-lg md:text-2xl font-extrabold placeholder:font-extrabold`} type="text" value={monthsInput} minLength={1} maxLength={2} name="month" id="month" placeholder='MM' />
+                <input ref={monthInputRef} onChange={(e) => { setMonthsInput(e.target.value); setError({ ...error, month: "" }) }} className={`${error.month ? "text-red-500 border-red-300" : "border-gray-300 hover:border-purple-400"} px-3 md:px-5 py-2 md:py-3 rounded-md border-2 focus:outline-2 outline-[#7d50f5] text-lg md:text-2xl font-extrabold placeholder:font-extrabold`} type="text" value={monthsInput} minLength={1} maxLength={2} name="month" id="month" placeholder='MM' />
                 {error.month && <p className='text-red-400 text-xs'>{error.month}</p>}
 
               </div>
@@ -124,7 +147,7 @@ const Home = () => {
             </div>
 
             <div className='relative flex justify-center w-full h-[2px] bg-gray-300'>
-              <button type="submit" disabled={error.day || error.month || error.year} className='absolute md:right-0 -top-7 md:-top-10 w-14 h-14 md:w-20 md:h-20 p-3 md:p-4 duration-300 bg-[#7d50f5] hover:bg-black rounded-full hover:shadow-inner shadow-white disabled:bg-gray-500'>
+              <button onClick={handleErrors} type="submit" disabled={error.day || error.month || error.year} className='absolute md:right-0 -top-7 md:-top-10 w-14 h-14 md:w-20 md:h-20 p-3 md:p-4 duration-300 bg-[#7d50f5] hover:bg-black rounded-full hover:shadow-inner shadow-white disabled:bg-gray-500'>
                 <img src={iconButton} alt="buttonIcon" />
               </button>
             </div>
