@@ -34,6 +34,7 @@ const Home = () => {
   const [daysInput, setDaysInput] = useState("")
 
 
+
   function handleSubmit(e) {
     e.preventDefault()
 
@@ -78,7 +79,8 @@ const Home = () => {
     }
 
 
-    if (!error.day && !error.month && !error.year) {
+
+    if (error.day || error.month || error.year) {
       setLoading(true)
       setDays(dd - daysInput)
       setMonths(mm - monthsInput)
